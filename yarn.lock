@@ -1625,6 +1625,7 @@ __metadata:
     "@eslint/eslintrc": "npm:^3"
     "@mui/icons-material": "npm:^7.2.0"
     "@mui/material": "npm:^7.2.0"
+    "@mui/types": "npm:^7.4.4"
     "@supabase/ssr": "npm:^0.6.1"
     "@supabase/supabase-js": "npm:^2.53.0"
     "@tailwindcss/postcss": "npm:^4"
@@ -1632,6 +1633,7 @@ __metadata:
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
     autoprefixer: "npm:^10.4.21"
+    cookies-next: "npm:^6.1.0"
     eslint: "npm:^9"
     eslint-config-next: "npm:15.4.5"
     next: "npm:15.4.5"
@@ -2050,6 +2052,18 @@ __metadata:
   version: 1.0.2
   resolution: "cookie@npm:1.0.2"
   checksum: 10c0/fd25fe79e8fbcfcaf6aa61cd081c55d144eeeba755206c058682257cb38c4bd6795c6620de3f064c740695bb65b7949ebb1db7a95e4636efb8357a335ad3f54b
+  languageName: node
+  linkType: hard
+
+"cookies-next@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "cookies-next@npm:6.1.0"
+  dependencies:
+    cookie: "npm:^1.0.1"
+  peerDependencies:
+    next: ">=15.0.0"
+    react: ">= 16.8.0"
+  checksum: 10c0/1af0dba68e6f87c060c04d7588b2b70c06af890bb4499eb96da564f4bb0881296ab7aa32075f9afdf53bc311362b087b32d04e3719c34de0b560bee7add16890
   languageName: node
   linkType: hard
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { addTransaction, deleteTransaction } from "../../app/actions";
+import { addTransaction, deleteTransaction } from "@/actions/transaction";
 import { Toaster, toast } from "react-hot-toast";
 import {
   Container,
@@ -33,17 +33,11 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-type Transaction = {
-  id: number;
-  date: string;
-  description: string;
-  amount: number;
-  type: "income" | "expense";
-};
+import { Transaction } from "@/types/interface/transaction";
 
 type AccountBookProps = {
   initialTransactions: Transaction[];
+  session: boolean;
 };
 
 const theme = createTheme({
@@ -73,14 +67,21 @@ function SubmitButton() {
   );
 }
 
-export default function AccountBook({ initialTransactions }: AccountBookProps) {
+export default function AccountBook({
+  initialTransactions,
+  session,
+}: AccountBookProps) {
   const formRef = useRef<HTMLFormElement>(null);
-  const transactions = initialTransactions;
+  const [transactions, setTransactions] = useState(initialTransactions);
 
   const [open, setOpen] = useState(false);
   const [transactionIdToDelete, setTransactionIdToDelete] = useState<
     number | null
   >(null);
+
+  useEffect(() => {
+    setTransactions(initialTransactions);
+  }, [initialTransactions]);
 
   const handleClickOpen = (id: number) => {
     setTransactionIdToDelete(id);
@@ -94,14 +95,44 @@ export default function AccountBook({ initialTransactions }: AccountBookProps) {
 
   const handleDeleteConfirm = async () => {
     if (transactionIdToDelete !== null) {
-      const result = await deleteTransaction(transactionIdToDelete);
-      if (result?.success) {
-        toast.success(result.message);
-      } else if (result?.message) {
-        toast.error(result.message);
+      if (session) {
+        const result = await deleteTransaction(transactionIdToDelete);
+        if (result?.success) {
+          toast.success(result.message);
+        } else if (result?.message) {
+          toast.error(result.message);
+        }
+      } else {
+        setTransactions((prev) =>
+          prev.filter((t) => t.id !== transactionIdToDelete)
+        );
+        toast.success("거래 내역이 삭제되었습니다.");
       }
     }
     handleClose();
+  };
+
+  const handleAddTransaction = async (formData: FormData) => {
+    if (session) {
+      const result = await addTransaction(formData);
+      if (result?.success) {
+        toast.success(result.message);
+        formRef.current?.reset();
+      } else if (result?.message) {
+        toast.error(result.message);
+      }
+    } else {
+      const newTransaction: Transaction = {
+        id: Date.now(),
+        date: formData.get("date") as string,
+        description: formData.get("description") as string,
+        amount: Number(formData.get("amount")),
+        type: formData.get("type") as "income" | "expense",
+      };
+      setTransactions((prev) => [newTransaction, ...prev]);
+      toast.success("거래 내역이 추가되었습니다.");
+      formRef.current?.reset();
+    }
   };
 
   const totalIncome = transactions
@@ -132,7 +163,7 @@ export default function AccountBook({ initialTransactions }: AccountBookProps) {
           </Paper>
 
           <Grid container spacing={3} mb={4}>
-            <Grid item xs={12} md={4}>
+            <Grid>
               <Paper
                 elevation={3}
                 sx={{ p: 2, borderRadius: 2, backgroundColor: "#e8f5e9" }}
@@ -148,7 +179,7 @@ export default function AccountBook({ initialTransactions }: AccountBookProps) {
                 </Typography>
               </Paper>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid>
               <Paper
                 elevation={3}
                 sx={{ p: 2, borderRadius: 2, backgroundColor: "#ffebee" }}
@@ -164,7 +195,7 @@ export default function AccountBook({ initialTransactions }: AccountBookProps) {
                 </Typography>
               </Paper>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid>
               <Paper
                 elevation={3}
                 sx={{ p: 2, borderRadius: 2, backgroundColor: "#e3f2fd" }}
@@ -189,19 +220,11 @@ export default function AccountBook({ initialTransactions }: AccountBookProps) {
             <Box
               component="form"
               ref={formRef}
-              action={async (formData) => {
-                const result = await addTransaction(formData);
-                if (result?.success) {
-                  toast.success(result.message);
-                  formRef.current?.reset();
-                } else if (result?.message) {
-                  toast.error(result.message);
-                }
-              }}
+              action={handleAddTransaction}
               sx={{ mt: 2 }}
             >
               <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} sm={6} md={2}>
+                <Grid>
                   <TextField
                     name="date"
                     label="날짜"
@@ -211,7 +234,7 @@ export default function AccountBook({ initialTransactions }: AccountBookProps) {
                     InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid>
                   <TextField
                     name="description"
                     label="내용"
@@ -219,7 +242,7 @@ export default function AccountBook({ initialTransactions }: AccountBookProps) {
                     placeholder="예: 점심 식사"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={2}>
+                <Grid>
                   <TextField
                     name="amount"
                     label="금액"
@@ -228,7 +251,7 @@ export default function AccountBook({ initialTransactions }: AccountBookProps) {
                     placeholder="예: 10000"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={2}>
+                <Grid>
                   <FormControl fullWidth>
                     <InputLabel>종류</InputLabel>
                     <Select name="type" defaultValue="expense" label="종류">
@@ -237,7 +260,7 @@ export default function AccountBook({ initialTransactions }: AccountBookProps) {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} md={3}>
+                <Grid>
                   <SubmitButton />
                 </Grid>
               </Grid>

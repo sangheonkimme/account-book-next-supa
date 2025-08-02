@@ -1,16 +1,30 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createSupabaseServerClient } from "../lib/supabaseServer";
+import { createSupabaseServerClient } from "@/lib/supabase";
 
 export async function addTransaction(formData: FormData) {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  console.log("user :: ", user);
+
+  if (!user) {
+    return {
+      success: false,
+      message: "로그인이 필요합니다.",
+    };
+  }
 
   const rawFormData = {
     date: formData.get("date") as string,
     description: formData.get("description") as string,
     amount: parseFloat(formData.get("amount") as string),
     type: formData.get("type") as "income" | "expense",
+    user_id: user.id,
   };
 
   if (!rawFormData.date || !rawFormData.description || !rawFormData.amount) {
@@ -38,7 +52,7 @@ export async function addTransaction(formData: FormData) {
 }
 
 export async function deleteTransaction(id: number) {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
 
   const { error } = await supabase.from("transactions").delete().match({ id });
 
