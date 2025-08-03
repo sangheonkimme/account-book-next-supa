@@ -3,6 +3,7 @@
 import { Button } from "@mui/material";
 import { createSupabaseBrowserClient } from "@/lib/client/supabase";
 import GoogleIcon from "@mui/icons-material/Google";
+import { gtagEvent } from "../common/GoogleAnalytics";
 
 export default function LoginButton() {
   const handleGoogleLogin = async () => {
@@ -12,6 +13,12 @@ export default function LoginButton() {
       options: {
         redirectTo: `${location.origin}/auth/callback`,
       },
+    });
+    gtagEvent({
+      action: "button_click",
+      category: "engagement",
+      label: "login_button",
+      value: 1,
     });
   };
 
