@@ -7,18 +7,21 @@ import { gtagEvent } from "../common/GoogleAnalytics";
 
 export default function LoginButton() {
   const handleGoogleLogin = async () => {
-    const supabase = createSupabaseBrowserClient();
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${location.origin}/auth/callback`,
-      },
-    });
     gtagEvent({
       action: "button_click",
       category: "engagement",
       label: "login_button",
       value: 1,
+    });
+
+    const supabase = await createSupabaseBrowserClient();
+    console.log("location.origin:", location.origin);
+
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
     });
   };
 
