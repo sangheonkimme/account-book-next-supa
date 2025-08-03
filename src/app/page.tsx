@@ -1,7 +1,6 @@
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import { createSupabaseServerClient } from "@/lib/supabase";
-import LoginButton from "@/components/auth/LoginButton";
-import LogoutButton from "../components/auth/LogoutButton";
+import AuthButton from "@/components/auth/AuthButton";
 import AccountBook from "../components/pages/AccountBook";
 
 export default async function Home() {
@@ -26,7 +25,8 @@ export default async function Home() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             My Account Book
           </Typography>
-          {session ? <LogoutButton /> : <LoginButton />}
+          {/* login | logout 버튼 렌더링 시 supabase client / server action 차이로 하이드레이션 이슈 발생 -> AuthButton 변경 */}
+          <AuthButton />
         </Toolbar>
       </AppBar>
       <AccountBook
