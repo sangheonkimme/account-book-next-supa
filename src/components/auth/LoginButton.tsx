@@ -7,7 +7,6 @@ import { gtagEvent } from "../common/GoogleAnalytics";
 
 export default function LoginButton() {
   const handleGoogleLogin = async () => {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
     gtagEvent({
       action: "button_click",
       category: "engagement",
@@ -19,7 +18,7 @@ export default function LoginButton() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${baseUrl}/auth/callback`,
+        redirectTo: `${location.origin}/auth/callback`,
       },
     });
   };
