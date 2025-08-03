@@ -163,7 +163,7 @@ export default function AccountBook({
           </Paper>
 
           <Grid container spacing={3} mb={4}>
-            <Grid>
+            <Grid size={{ xs: 12, md: 4 }}>
               <Paper
                 elevation={3}
                 sx={{ p: 2, borderRadius: 2, backgroundColor: "#e8f5e9" }}
@@ -179,7 +179,7 @@ export default function AccountBook({
                 </Typography>
               </Paper>
             </Grid>
-            <Grid>
+            <Grid size={{ xs: 12, md: 4 }}>
               <Paper
                 elevation={3}
                 sx={{ p: 2, borderRadius: 2, backgroundColor: "#ffebee" }}
@@ -195,7 +195,7 @@ export default function AccountBook({
                 </Typography>
               </Paper>
             </Grid>
-            <Grid>
+            <Grid size={{ xs: 12, md: 4 }}>
               <Paper
                 elevation={3}
                 sx={{ p: 2, borderRadius: 2, backgroundColor: "#e3f2fd" }}
@@ -224,7 +224,7 @@ export default function AccountBook({
               sx={{ mt: 2 }}
             >
               <Grid container spacing={2} alignItems="center">
-                <Grid>
+                <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                   <TextField
                     name="date"
                     label="날짜"
@@ -234,7 +234,7 @@ export default function AccountBook({
                     InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
-                <Grid>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <TextField
                     name="description"
                     label="내용"
@@ -242,7 +242,7 @@ export default function AccountBook({
                     placeholder="예: 점심 식사"
                   />
                 </Grid>
-                <Grid>
+                <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                   <TextField
                     name="amount"
                     label="금액"
@@ -251,7 +251,7 @@ export default function AccountBook({
                     placeholder="예: 10000"
                   />
                 </Grid>
-                <Grid>
+                <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                   <FormControl fullWidth>
                     <InputLabel>종류</InputLabel>
                     <Select name="type" defaultValue="expense" label="종류">
@@ -260,7 +260,7 @@ export default function AccountBook({
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid>
+                <Grid size={{ xs: 12, md: 3 }}>
                   <SubmitButton />
                 </Grid>
               </Grid>

@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import { createSupabaseServerClient } from "@/lib/supabase";
 import AuthButton from "@/components/auth/AuthButton";
-import AccountBook from "../components/pages/AccountBook";
+import AccountBook from "@/components/pages/AccountBook";
 
 export default async function Home() {
   const supabase = await createSupabaseServerClient();
