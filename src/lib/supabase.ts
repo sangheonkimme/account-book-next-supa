@@ -22,7 +22,11 @@ export const createSupabaseServerClient = async () => {
         }
       },
       remove(name: string, options: CookieOptions) {
-        cookieStore.set({ name, value: "", ...options });
+        try {
+          cookieStore.set({ name, value: "", ...options });
+        } catch (error) {
+          console.log(error);
+        }
       },
     },
   });
