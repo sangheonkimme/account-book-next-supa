@@ -1,17 +1,10 @@
-import { Box, CircularProgress } from '@mui/material';
+import { Loader, Center } from '@mantine/core';
 
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.
   return (
-    <Box 
-      sx={{
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        minHeight: '100vh'
-      }}
-    >
-      <CircularProgress />
-    </Box>
+    <Center style={{ minHeight: '100vh' }}>
+      <Loader />
+    </Center>
   );
 }

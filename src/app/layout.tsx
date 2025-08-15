@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
+import Layout from "@/components/layout/Layout";
 import "./globals.css";
-import GoogleAnalytics from "@/components/common/GoogleAnalytics";
+import "@mantine/core/styles.css";
 
 export const metadata: Metadata = {
   title: "나의 사랑스런 가계부",
@@ -28,8 +30,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" {...mantineHtmlProps}>
       <head>
+        <ColorSchemeScript />
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
+        />
+
         <link
           rel="stylesheet"
           as="style"
@@ -37,11 +45,9 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
         />
       </head>
+
       <body suppressHydrationWarning>
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-        )}
-        {children}
+        <Layout>{children}</Layout>
       </body>
     </html>
   );
