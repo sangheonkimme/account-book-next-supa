@@ -12,6 +12,7 @@ export default async function Home() {
     const { data } = await supabase
       .from("transactions")
       .select("*")
+      .order("id", { ascending: false })
       .order("date", { ascending: false });
     transactions = data || [];
   }
